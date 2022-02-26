@@ -1,26 +1,34 @@
 // React dependences
-import React from "react";
-import { Button, Container, Image} from "react-bootstrap";
+import React, {useEffect, useState} from "react";
 
 // SCSS files
 import "./scss/page.scss"
 
-// ASSETS
-import logo from "./assets/icons/dGitIconGreen.png"
+async function checkIfWalletIsConnected(onConnected) {
+    if (window.ethereum) {
+      const accounts = await window.ethereum.request({
+        method: "eth_accounts",
+      });
+  
+      if (accounts.length > 0) {
+        const account = accounts[0];
+        onConnected(account);
+        return;
+      }
+    }
+}
 
-export default function App() {
-    return (
-        <Container>
-            <div className="page.container">
-                <div style={{flex: 1, marginBottom: 130, textAlign: "center"}}>
-                    <Image fluid src={logo} width={200} height={200}></Image>
-                </div>
-                <div style={{flex: 1, margin: 0, textAlign: "center"}}>
-                    <Button variant = "light" onClick={() => alert("connect")}>
-                        Connect Wallet
-                    </Button>
-                </div>
-            </div>
-        </Container>
-    )
+export default function App({onAddressChanged}) {
+    const [userAddress, setUserAddress] = useState("");
+
+    useEffect(() => {
+        checkIfWalletIsConnected(setUserAddress);
+    }, []);
+
+    useEffect(() => {
+        onAddressChanged(userAddress);
+    }, [userAddress]);
+
+    return userAddress ? 
+    ( <chatPage /> ) : (<authMM setUserAddress={setUserAddress}> </authMM>)
 }
