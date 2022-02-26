@@ -1,13 +1,15 @@
 // React dependences
-import React from "react";
-import { Container } from "react-bootstrap";
+import React, {StyleSheet} from "react";
+import { Container} from "react-bootstrap";
+import Chatbox from "./components/chatbox";
+
+// SCSS files
+import "./scss/page.scss"
 
 export default function App() {
     return (
         <Container>
-            <div>
-                <text> Hello dGit </text>
-            </div>
+            <Chatbox></Chatbox>
         </Container>
     )
 }
