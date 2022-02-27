@@ -1,4 +1,16 @@
-import { Button, Box, Text, Image, Input, IconButton , InputLeftElement, InputRightElement, InputGroup, Icon, Flex} from "@chakra-ui/react";
+import { 
+  Button, 
+  Box,
+  Text,
+  Image,
+  Input,
+  InputLeftElement, 
+  InputRightElement, 
+  InputGroup, 
+  Icon
+} from "@chakra-ui/react";
+
+import {useReducer, useEffect, useState} from "react"
 import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
 import Layout from "../components/Layout";
@@ -8,14 +20,93 @@ import { BsFillArrowRightCircleFill } from 'react-icons/bs'
 import pfp1 from "../assets/pfp/810.png"
 import logo from "../assets/icons/dGitIconGreen.png"
 
+// External Library
+import Gun from 'gun'
+
+// Server GunDB - Initialising
+// initialize gun locally
+const gun = Gun({
+    peers: [
+      'http://localhost:3030/gun'
+    ]
+  })
+
+  // create the initial state to hold the messages
+const initialState = {
+    messages: []
+}
+  
+// Create a reducer that will update the messages array
+function reducer(state: any, message: String) {
+    return {
+      messages: [...state.messages, message]
+    }
+}
 
 type Props = {
   handleOpenModal: any;
 };
 
+
+
 export default function ConnectButton({ handleOpenModal }: Props) {
   const { activateBrowserWallet, account } = useEthers();
   const etherBalance = useEtherBalance(account);
+  const [username, setUsername] = useState(account)
+
+  // GUN DATABASE VARIABLEs
+  // -------------------------------------------------------------------------
+  // the form state manages the form input for creating a new message
+  const [formState, setForm] = useState({
+    name: '',
+    message: ''
+  })
+
+  // date and time format function
+
+  function formatted_date() {
+    var result = "";
+    var d = new Date();
+    result += d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() +
+      " " + d.getHours() + ":" + d.getMinutes();
+    return result;
+  }
+
+  // initialize the reducer & state for holding the messages array
+  const [state, dispatch] = useReducer(reducer, initialState)
+
+  // when the app loads, fetch the current messages and load them into the state
+  // this also subscribes to new data as it changes and updates the local state
+  // useEffect(() => {
+  //   const messages = gun.get('messages')
+  //   messages.map().on(m => {
+  //     dispatch({
+  //       name: m.name,
+  //       message: m.message,
+  //       note: m.note,
+  //       createdAt: m.createdAt
+  //     })
+  //   })
+  // }, [])
+
+  // set a new message in gun, update the local state to reset the form field
+  function saveMessage() {
+    const messages = gun.get('messages')
+    messages.set({
+      name: formState.name,
+      message: formState.message,
+      createdAt: formatted_date()
+    })
+    setForm({
+      name: '',
+      message: ''
+    })
+  }
+
+  function onChange(e: any) {
+      setForm({...formState, name: '0xDuckie', message: e.target.value})
+  }
+  // ------------------------------------------------------------------------------
 
   function handleConnectWallet() {
     activateBrowserWallet();
@@ -25,9 +116,6 @@ export default function ConnectButton({ handleOpenModal }: Props) {
     alert('send NFT')
   }
 
-  function handleSendButton() {
-    alert('send message')
-  }
 
   return account ? (
     <Layout>
@@ -103,7 +191,15 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         py="0"
         boxShadow='lg'
         >
-          {/* messages */}
+          {
+            state.messages.map(message => (
+                <div key={message.createdAt}>
+                    <h2> {message.message} </h2>
+                    <p> {message.note} </p>
+                    <p> {message.createdAt}</p>
+                </div>
+             ))
+            }
       </Box>
       {/* input text bar */}
       <InputGroup 
@@ -144,13 +240,15 @@ export default function ConnectButton({ handleOpenModal }: Props) {
             borderRadius= "xl"
             placeholder='dGit here'
             borderColor="gray.900"
+            onChange = {onChange}
+            value = {formState.message}
           />
 
           <InputRightElement 
             justifyContent= "center"
             alignItems="center"
             children={
-              <button style = {{position: 'relative', top: '10px', right: '4px', display: 'flex'}} onClick={handleSendButton} >
+              <button disabled={formState.message.length<1} style = {{position: 'relative', top: '10px', right: '4px', display: 'flex'}} onClick={saveMessage} >
                  <Icon as = {BsFillArrowRightCircleFill} color = "white" width = "7" height="7"/> 
               </button>
           } 
