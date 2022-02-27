@@ -1,8 +1,11 @@
-import { Button, Box, Text, Image, Center } from "@chakra-ui/react";
+import { Button, Box, Text, Image, Center, layout } from "@chakra-ui/react";
 import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
+import Layout from "../components/Layout";
+
 
 import pfp1 from "../assets/pfp/810.png"
+import logo from "../assets/icons/dGitIconGreen.png"
 
 type Props = {
   handleOpenModal: any;
@@ -73,24 +76,28 @@ export default function ConnectButton({ handleOpenModal }: Props) {
       </Button>
     </Box>
   ) : (
-    <Button
-      onClick={handleConnectWallet}
-      bg="gray.800"
-      color="gray.300"
-      fontSize="lg"
-      fontWeight="medium"
-      borderRadius="xl"
-      border="1px solid transparent"
-      _hover={{
-        borderColor: "gray.700",
-        color: "gray.400",
-      }}
-      _active={{
-        backgroundColor: "gray.800",
-        borderColor: "gray.700",
-      }}
-    >
-      Connect Wallet
-    </Button>
+      <Layout>
+        <Image src={logo} width={200} paddingBottom={20} />
+        <Button
+          onClick={handleConnectWallet}
+          bg="gray.800"
+          color="gray.300"
+          fontSize="lg"
+          fontWeight="medium"
+          borderRadius="xl"
+          border="1px solid transparent"
+          _hover={{
+            borderColor: "gray.700",
+            color: "gray.400",
+          }}
+          _active={{
+            backgroundColor: "gray.800",
+            borderColor: "gray.700",
+          }}
+        >
+          Connect Wallet
+        </Button>
+      </Layout>
+
   );
 }

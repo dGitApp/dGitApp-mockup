@@ -11,10 +11,14 @@ import {
     ModalBody,
     ModalCloseButton,
     Text,
+    Image
   } from "@chakra-ui/react";
   import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
   import { useEthers } from "@usedapp/core";
   import Identicon from "./Identicon";
+
+  import pfp1 from "../assets/pfp/810.png"
+
   
   type Props = {
     isOpen: any;
@@ -85,7 +89,27 @@ import {
                 </Button>
               </Flex>
               <Flex alignItems="center" mt={2} mb={4} lineHeight={1}>
-                <Identicon />
+                {/* <Identicon /> */}
+                <Box
+                  position="relative"
+                  left="1"
+                  height="4.2rem"
+                  width="4.2rem"
+                  borderRadius="2.1rem"
+                  // border="1px solid transparent"
+                  borderColor="limegreen"
+                  bg="black"
+                  >
+                  {/* 
+                    src image must be pulled from backend 
+                    with edit options and NFT verification
+                  */}
+                  <Image
+                    padding="0.5"
+                    borderRadius="2.1rem"
+                    src={pfp1} />
+                </Box>
+
                 <Text
                   color="white"
                   fontSize="xl"
