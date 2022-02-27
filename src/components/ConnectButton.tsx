@@ -1,4 +1,4 @@
-import { Button, Box, Text, Image, Input, IconButton , InputLeftElement, InputRightElement, InputGroup, Icon} from "@chakra-ui/react";
+import { Button, Box, Text, Image, Input, IconButton , InputLeftElement, InputRightElement, InputGroup, Icon, Flex} from "@chakra-ui/react";
 import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
 import Layout from "../components/Layout";
@@ -19,6 +19,14 @@ export default function ConnectButton({ handleOpenModal }: Props) {
 
   function handleConnectWallet() {
     activateBrowserWallet();
+  }
+
+  function handleDGitButton() {
+    alert('send NFT')
+  }
+
+  function handleSendButton() {
+    alert('send message')
   }
 
   return account ? (
@@ -102,38 +110,49 @@ export default function ConnectButton({ handleOpenModal }: Props) {
           justifyContent= "center"
           alignItems="center"
           margin={-1.5}
-          bg = "gray.800"
+          px = {0.4}
           width= "390px"
+          height= "60px"
+          bg = "gray.800"
           zIndex={3}
           border="1px solid transparent"
           borderColor= "gray.800"
           borderRadius= "xl"
-
         >
-          <InputLeftElement 
+          <InputLeftElement
+            justifyContent= "center"
+            alignItems="center"
             children={ 
-              <button onClick={()=>alert('send nft')} > <Image src={logo} width = {7}/> </button>
+              <button style = {{position: 'relative', top: '8px', display: 'flex'}} onClick={handleDGitButton} > 
+                <Image src={logo} width = {9}/> 
+              </button>
             }
           />
           
           <Input
+            width= "390px"
+            height= "58px"
+            justifyContent='center'
+            alignItems='center'
             focusBorderColor='limegreen'
             _hover={{
-              borderColor: "gray.700",
-              backgroundColor: "gray.700",
+              backgroundColor: "gray.600",
             }}
             position="relative"
-            size='md'
             color= "whatsapp.300"
             bg="gray.700"
             borderRadius= "xl"
-            placeholder='dGita here'
+            placeholder='dGit here'
             borderColor="gray.900"
           />
 
           <InputRightElement 
+            justifyContent= "center"
+            alignItems="center"
             children={
-              <button onClick={()=>alert('send nft')} > <Icon as = {BsFillArrowRightCircleFill} color = "white" size='md'/> </button>
+              <button style = {{position: 'relative', top: '10px', right: '4px', display: 'flex'}} onClick={handleSendButton} >
+                 <Icon as = {BsFillArrowRightCircleFill} color = "white" width = "7" height="7"/> 
+              </button>
           } 
           />
 
