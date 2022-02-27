@@ -1,4 +1,4 @@
-import { Button, Box, Text, Image, Input, Icon, InputLeftElement, InputRightElement, InputGroup} from "@chakra-ui/react";
+import { Button, Box, Text, Image, Input, IconButton , InputLeftElement, InputRightElement, InputGroup, Icon} from "@chakra-ui/react";
 import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
 import Layout from "../components/Layout";
@@ -7,7 +7,6 @@ import { BsFillArrowRightCircleFill } from 'react-icons/bs'
 
 import pfp1 from "../assets/pfp/810.png"
 import logo from "../assets/icons/dGitIconGreen.png"
-
 
 
 type Props = {
@@ -112,8 +111,9 @@ export default function ConnectButton({ handleOpenModal }: Props) {
 
         >
           <InputLeftElement 
-            pointerEvents='none'
-            children={<Image src = {logo} width={8} />}
+            children={ 
+              <button onClick={()=>alert('send nft')} > <Image src={logo} width = {7}/> </button>
+            }
           />
           
           <Input
@@ -132,8 +132,9 @@ export default function ConnectButton({ handleOpenModal }: Props) {
           />
 
           <InputRightElement 
-            pointerEvents='none'
-            children={<Icon as={BsFillArrowRightCircleFill} color = "white" width={10} />} 
+            children={
+              <button onClick={()=>alert('send nft')} > <Icon as = {BsFillArrowRightCircleFill} color = "white" size='md'/> </button>
+          } 
           />
 
         </InputGroup>
