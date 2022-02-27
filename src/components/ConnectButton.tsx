@@ -1,7 +1,8 @@
-import { Button, Box, Text } from "@chakra-ui/react";
+import { Button, Box, Text, Image, Center } from "@chakra-ui/react";
 import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
-import Identicon from "./Identicon";
+
+import pfp1 from "../assets/pfp/810.png"
 
 type Props = {
   handleOpenModal: any;
@@ -19,7 +20,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
     <Box
       display="flex"
       alignItems="center"
-      background="gray.700"
+      background= "limegreen"
       borderRadius="xl"
       py="0"
     >
@@ -30,17 +31,17 @@ export default function ConnectButton({ handleOpenModal }: Props) {
       </Box>
       <Button
         onClick={handleOpenModal}
-        bg="gray.800"
+        bg="green.900"
         border="1px solid transparent"
         _hover={{
           border: "1px",
           borderStyle: "solid",
-          borderColor: "blue.400",
-          backgroundColor: "gray.700",
+          borderColor: "darkgreen",
+          backgroundColor: "darkgreen",
         }}
         borderRadius="xl"
         m="1px"
-        px={3}
+        px={2}
         height="38px"
       >
         <Text color="white" fontSize="md" fontWeight="medium" mr="2">
@@ -50,8 +51,25 @@ export default function ConnectButton({ handleOpenModal }: Props) {
               account.length
             )}`}
         </Text>
-
-        <Identicon />
+        <Box
+          position= "relative"
+          left="1" 
+          height = "4.2rem"
+          width = "4.2rem"
+          borderRadius="2.1rem"
+          // border="1px solid transparent"
+          borderColor = "limegreen"
+          bg = "black"
+          >
+          {/* 
+            src image must be pulled from backend 
+            with edit options and NFT verification
+          */}
+          <Image
+            padding= "0.5"
+            borderRadius="2.1rem"
+            src = {pfp1} />
+        </Box>
       </Button>
     </Box>
   ) : (
