@@ -8,6 +8,8 @@ import { BsFillArrowRightCircleFill } from 'react-icons/bs'
 import pfp1 from "../assets/pfp/810.png"
 import logo from "../assets/icons/dGitIconGreen.png"
 
+
+
 type Props = {
   handleOpenModal: any;
 };
@@ -97,20 +99,18 @@ export default function ConnectButton({ handleOpenModal }: Props) {
           {/* messages */}
       </Box>
       {/* input text bar */}
-      <Box
-        margin={-1.5}
-        display = "flex"
-        position = "relative"
-        width= "390px"
-        height="48px"
-        alignItems="center"
-        background="gray.900"
-        borderRadius="xl"
-        py="0"
-        zIndex={3}
-        
+      <InputGroup 
+          justifyContent= "center"
+          alignItems="center"
+          margin={-1.5}
+          bg = "gray.800"
+          width= "390px"
+          zIndex={3}
+          border="1px solid transparent"
+          borderColor= "gray.800"
+          borderRadius= "xl"
+
         >
-        <InputGroup>
           <InputLeftElement 
             pointerEvents='none'
             children={<Image src = {logo} width={8} />}
@@ -123,9 +123,10 @@ export default function ConnectButton({ handleOpenModal }: Props) {
               backgroundColor: "gray.700",
             }}
             position="relative"
+            size='md'
+            color= "whatsapp.300"
             bg="gray.700"
-            borderLeftRadius="100px"
-            borderRightRadius="80px"
+            borderRadius= "xl"
             placeholder='dGita here'
             borderColor="gray.900"
           />
@@ -136,7 +137,6 @@ export default function ConnectButton({ handleOpenModal }: Props) {
           />
 
         </InputGroup>
-      </Box>
     </Layout>
   ) : (
       <Layout>
