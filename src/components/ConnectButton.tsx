@@ -47,6 +47,12 @@ type Props = {
   handleOpenModal: any;
 };
 
+type form = {
+  name: string
+  message: string
+  createdAt: string
+}
+
 
 
 export default function ConnectButton({ handleOpenModal }: Props) {
@@ -57,10 +63,12 @@ export default function ConnectButton({ handleOpenModal }: Props) {
   // GUN DATABASE VARIABLEs
   // -------------------------------------------------------------------------
   // the form state manages the form input for creating a new message
-  const [formState, setForm] = useState({
-    name: '',
-    message: ''
-  })
+  const [formState, setForm] = useState<form>(
+    {
+      name: '',
+      message: '',
+      createdAt: ''
+    })
 
   // date and time format function
 
@@ -77,17 +85,19 @@ export default function ConnectButton({ handleOpenModal }: Props) {
 
   // when the app loads, fetch the current messages and load them into the state
   // this also subscribes to new data as it changes and updates the local state
-  // useEffect(() => {
-  //   const messages = gun.get('messages')
-  //   messages.map().on(m => {
-  //     dispatch({
-  //       name: m.name,
-  //       message: m.message,
-  //       note: m.note,
-  //       createdAt: m.createdAt
-  //     })
-  //   })
-  // }, [])
+  useEffect(() => {
+    const messages = gun.get('messages')
+
+    messages.map().on(m => {
+      dispatch(
+        {
+          name: m.name,
+          message: m.message,
+          createdAt: m.createdAt
+        }
+      )
+    })
+  }, [])
 
   // set a new message in gun, update the local state to reset the form field
   function saveMessage() {
@@ -99,7 +109,8 @@ export default function ConnectButton({ handleOpenModal }: Props) {
     })
     setForm({
       name: '',
-      message: ''
+      message: '',
+      createdAt: ''
     })
   }
 
@@ -110,6 +121,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
 
   function handleConnectWallet() {
     activateBrowserWallet();
+    console.log(account)
   }
 
   function handleDGitButton() {
@@ -190,6 +202,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         borderColor= "gray.800"
         py="0"
         boxShadow='lg'
+        overflow='auto'
         >
           {
             state.messages.map(message => (
@@ -241,6 +254,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
             placeholder='dGit here'
             borderColor="gray.900"
             onChange = {onChange}
+            name="message"
             value = {formState.message}
           />
 
