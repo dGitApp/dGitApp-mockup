@@ -19,6 +19,7 @@ import { BsFillArrowRightCircleFill } from 'react-icons/bs'
 
 import pfp1 from "../assets/pfp/810.png"
 import logo from "../assets/icons/dGitIconGreen.png"
+import "../scss/chat.scss"
 
 // External Library
 import Gun from 'gun'
@@ -192,16 +193,16 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         background="gray.700"
         border="1px solid transparent"
         borderColor= "gray.800"
-        py="0"
         boxShadow='lg'
-        overflow='auto'
+        overflow= 'auto'
+        padding={3}
         >
           {
             state.messages.map(message => (
-                <div key={message.createdAt}>
-                    <h2> {message.message} </h2>
-                    <p> {message.note} </p>
-                    <p> {message.createdAt}</p>
+                <div className="message" key={message.createdAt}>
+                    <h2> {message.message}   </h2>
+                    <p>  {message.note}      </p>
+                    <p>  {message.createdAt} </p>
                 </div>
              ))
             }
