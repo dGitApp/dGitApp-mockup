@@ -37,7 +37,7 @@ const initialState = {
 }
   
 // Create a reducer that will update the messages array
-function reducer(state: any, message: String) {
+function reducer(state: any, message: any) {
     return {
       messages: [...state.messages, message]
     }
@@ -47,23 +47,16 @@ type Props = {
   handleOpenModal: any;
 };
 
-type form = {
-  name: string
-  message: string
-  createdAt: string
-}
-
 
 
 export default function ConnectButton({ handleOpenModal }: Props) {
   const { activateBrowserWallet, account } = useEthers();
   const etherBalance = useEtherBalance(account);
-  const [username, setUsername] = useState(account)
 
   // GUN DATABASE VARIABLEs
   // -------------------------------------------------------------------------
   // the form state manages the form input for creating a new message
-  const [formState, setForm] = useState<form>(
+  const [formState, setForm] = useState(
     {
       name: '',
       message: '',
@@ -268,7 +261,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
           } 
           />
 
-        </InputGroup>
+      </InputGroup>
     </Layout>
   ) : (
       <Layout>
