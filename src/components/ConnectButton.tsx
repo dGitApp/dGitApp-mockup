@@ -1,4 +1,16 @@
-import { Button, Box, Text, Image, Input, IconButton , InputLeftElement, InputRightElement, InputGroup, Icon, Flex} from "@chakra-ui/react";
+import { 
+  Button, 
+  Box,
+  Text,
+  Image,
+  Input,
+  InputLeftElement, 
+  InputRightElement, 
+  InputGroup, 
+  Icon
+} from "@chakra-ui/react";
+
+import {useReducer, useEffect, useState} from "react"
 import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
 import Layout from "../components/Layout";
@@ -6,28 +18,112 @@ import Layout from "../components/Layout";
 import { BsFillArrowRightCircleFill } from 'react-icons/bs'
 
 import pfp1 from "../assets/pfp/810.png"
-import logo from "../assets/icons/dGitIconGreen.png"
+import pfp2 from "../assets/pfp/164.png"
 
+import logo from "../assets/icons/dGitIconGreen.png"
+import "../scss/chat.scss"
+
+// External Library
+import Gun from 'gun'
+
+// Server GunDB - Initialising
+// initialize gun locally
+const gun = Gun({
+    peers: [
+      'http://localhost:3030/gun'
+    ]
+  })
+
+  // create the initial state to hold the messages
+const initialState = {
+    messages: []
+}
+  
+// Create a reducer that will update the messages array
+function reducer(state: any, message: any) {
+    return {
+      messages: [...state.messages, message]
+    }
+}
 
 type Props = {
   handleOpenModal: any;
 };
 
+
+
 export default function ConnectButton({ handleOpenModal }: Props) {
   const { activateBrowserWallet, account } = useEthers();
   const etherBalance = useEtherBalance(account);
 
+  // GUN DATABASE VARIABLEs
+  // -------------------------------------------------------------------------
+  // the form state manages the form input for creating a new message
+  const [formState, setForm] = useState(
+    {
+      name: '',
+      message: '',
+      createdAt: ''
+    })
+
+  // date and time format function
+
+  function formatted_date() {
+    var result = "";
+    var d = new Date();
+    result += d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() +
+      " " + d.getHours() + ":" + d.getMinutes();
+    return result;
+  }
+
+  // initialize the reducer & state for holding the messages array
+  const [state, dispatch] = useReducer(reducer, initialState)
+
+  // when the app loads, fetch the current messages and load them into the state
+  // this also subscribes to new data as it changes and updates the local state
+  useEffect(() => {
+    const messages = gun.get('messages')
+
+    messages.map().on(m => {
+      dispatch(
+        {
+          name: m.name,
+          message: m.message,
+          createdAt: m.createdAt
+        }
+      )
+    })
+  }, [])
+
+  // set a new message in gun, update the local state to reset the form field
+  function saveMessage() {
+    const messages = gun.get('messages')
+    messages.set({
+      name: formState.name,
+      message: formState.message,
+      createdAt: formatted_date()
+    })
+    setForm({
+      name: '',
+      message: '',
+      createdAt: ''
+    })
+  }
+
+  function onChange(e: any) {
+      setForm({...formState, name: '0xDuckie', message: e.target.value})
+  }
+  // ------------------------------------------------------------------------------
+
   function handleConnectWallet() {
     activateBrowserWallet();
+    console.log(account)
   }
 
   function handleDGitButton() {
     alert('send NFT')
   }
 
-  function handleSendButton() {
-    alert('send message')
-  }
 
   return account ? (
     <Layout>
@@ -39,10 +135,10 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         background="gray.900"
         borderRadius="xl"
         boxShadow='lg'
-        py={0.5}
+        py={1}
         zIndex={3}
       >
-        <Box px="12">
+        <Box px="10">
           <Text color="white" fontSize="md">
             {etherBalance && parseFloat(formatEther(etherBalance)).toFixed(3)} ETH
           </Text>
@@ -59,10 +155,9 @@ export default function ConnectButton({ handleOpenModal }: Props) {
           }}
           borderRadius="xl"
           m="1px"
-          px={3.5}
-          height="38px"
+          height="44px"
         >
-          <Text color="white" fontSize="md" fontWeight="medium" mr="2">
+          <Text color="white" fontSize="md" fontWeight="medium" mr="3">
             {account &&
               `${account.slice(0, 6)}...${account.slice(
                 account.length - 4,
@@ -100,10 +195,21 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         background="gray.700"
         border="1px solid transparent"
         borderColor= "gray.800"
-        py="0"
         boxShadow='lg'
+        overflow= 'auto'
+        padding={3}
         >
-          {/* messages */}
+          {
+            state.messages.map(message => (
+                <div className={message.name === '0xDuckie' ? "message-sent" : "message-received"} key={message.createdAt}>
+                    {message.name !== '0xDuckie' && 
+                     ( <img className="avatar" src = {pfp2}/>)}
+                    <h2> {message.message}   </h2>
+                    <p>  {message.note}      </p>
+                    <p>  {message.createdAt} </p>
+                </div>
+             ))
+            }
       </Box>
       {/* input text bar */}
       <InputGroup 
@@ -144,19 +250,22 @@ export default function ConnectButton({ handleOpenModal }: Props) {
             borderRadius= "xl"
             placeholder='dGit here'
             borderColor="gray.900"
+            onChange = {onChange}
+            name="message"
+            value = {formState.message}
           />
 
           <InputRightElement 
             justifyContent= "center"
             alignItems="center"
             children={
-              <button style = {{position: 'relative', top: '10px', right: '4px', display: 'flex'}} onClick={handleSendButton} >
+              <button disabled={formState.message.length<1} style = {{position: 'relative', top: '10px', right: '4px', display: 'flex'}} onClick={saveMessage} >
                  <Icon as = {BsFillArrowRightCircleFill} color = "white" width = "7" height="7"/> 
               </button>
           } 
           />
 
-        </InputGroup>
+      </InputGroup>
     </Layout>
   ) : (
       <Layout>

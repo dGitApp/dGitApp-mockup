@@ -15,7 +15,6 @@ import {
   } from "@chakra-ui/react";
   import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
   import { useEthers } from "@usedapp/core";
-  import Identicon from "./Identicon";
 
   import pfp1 from "../assets/pfp/810.png"
 
