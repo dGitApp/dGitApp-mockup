@@ -18,6 +18,8 @@ import Layout from "../components/Layout";
 import { BsFillArrowRightCircleFill } from 'react-icons/bs'
 
 import pfp1 from "../assets/pfp/810.png"
+import pfp2 from "../assets/pfp/164.png"
+
 import logo from "../assets/icons/dGitIconGreen.png"
 import "../scss/chat.scss"
 
@@ -199,7 +201,9 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         >
           {
             state.messages.map(message => (
-                <div className="message" key={message.createdAt}>
+                <div className={message.name === '0xDuckie' ? "message-sent" : "message-received"} key={message.createdAt}>
+                    {message.name !== '0xDuckie' && 
+                     ( <img className="avatar" src = {pfp2}/>)}
                     <h2> {message.message}   </h2>
                     <p>  {message.note}      </p>
                     <p>  {message.createdAt} </p>
