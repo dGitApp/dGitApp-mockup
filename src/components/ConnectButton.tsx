@@ -132,10 +132,10 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         background="gray.900"
         borderRadius="xl"
         boxShadow='lg'
-        py={0.5}
+        py={1}
         zIndex={3}
       >
-        <Box px="12">
+        <Box px="10">
           <Text color="white" fontSize="md">
             {etherBalance && parseFloat(formatEther(etherBalance)).toFixed(3)} ETH
           </Text>
@@ -152,10 +152,9 @@ export default function ConnectButton({ handleOpenModal }: Props) {
           }}
           borderRadius="xl"
           m="1px"
-          px={3.5}
-          height="38px"
+          height="44px"
         >
-          <Text color="white" fontSize="md" fontWeight="medium" mr="2">
+          <Text color="white" fontSize="md" fontWeight="medium" mr="3">
             {account &&
               `${account.slice(0, 6)}...${account.slice(
                 account.length - 4,
