@@ -222,13 +222,12 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         borderColor= "gray.800"
         boxShadow='lg'
         overflow= 'hidden'
-
         padding={3}
         >
           {
             state.messages.map(message => (
-                <div className={message.name === '0xDuckie' ? "message-sent" : "message-received"} ref={messagesEndRef} key={message.createdAt}>
-                    {message.name !== '0xDuckie' && 
+                <div className={message.name === account ? "message-sent" : "message-received"} ref={messagesEndRef} key={message.createdAt}>
+                    {message.name !== account && 
                      ( <img className="avatar" src = {pfp2}/>)}
                     <h2> {message.message}   </h2>
                     <p>  {message.note}      </p>
