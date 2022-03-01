@@ -12,11 +12,11 @@ import {
 
 	
 import { Web3Provider } from '@ethersproject/providers';
+import { formatEther } from "@ethersproject/units";
 import { NftSwap } from '@traderxyz/nft-swap-sdk';
 
 import {useReducer, useEffect, useState} from "react"
-import { useEthers, useEtherBalance } from "@usedapp/core";
-import { formatEther } from "@ethersproject/units";
+
 import Layout from "../components/Layout";
 
 import { BsFillArrowRightCircleFill } from 'react-icons/bs'
@@ -29,6 +29,8 @@ import "../scss/chat.scss"
 
 // External Library
 import Gun from 'gun'
+import { constant } from "lodash";
+import { BigNumber } from "ethers";
 
 // Server GunDB - Initialising
 // initialize gun locally
@@ -55,11 +57,22 @@ type Props = {
 };
 
 
-
 export default function ConnectButton({ handleOpenModal }: Props) {
-  const { activateBrowserWallet, account } = useEthers();
-  const etherBalance = useEtherBalance(account);
-  const chainId = 1
+  // const { activateBrowserWallet, account, library} = useEthers();
+  // const chainId = 1
+  const [account, setAccount] = useState<string>()
+  const [etherBalance, setEtherBalance] = useState<BigNumber>()
+
+  // connect wallet function
+  async function connectMetaMask() {
+    const provider = new Web3Provider(window.ethereum)
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner()
+    let userAddress = await signer.getAddress()
+    let balance = await provider.getBalance(userAddress)
+    setAccount(userAddress)
+    setEtherBalance(balance)
+  }
 
   // GUN DATABASE VARIABLEs
   // -------------------------------------------------------------------------
@@ -121,11 +134,8 @@ export default function ConnectButton({ handleOpenModal }: Props) {
   // ------------------------------------------------------------------------------
 
   function handleConnectWallet() {
-    activateBrowserWallet();
-    const provider = new Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const swapSdk = new NftSwap(provider, signer, chainId);
-
+    // activateBrowserWallet();
+    connectMetaMask()
   }
 
   function handleDGitButton() {
