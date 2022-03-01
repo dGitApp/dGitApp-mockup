@@ -76,7 +76,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
   // GUN DATABASE VARIABLEs
   // -------------------------------------------------------------------------
   // the form state manages the form input for creating a new message
-  const [formState, setForm] = useState(
+  const [formState, setForm] = useState<any>(
     {
       name: '',
       message: '',
@@ -127,7 +127,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
   }
 
   function onChange(e: any) {
-      setForm({...formState, name: '0xDuckie', message: e.target.value})
+      setForm({...formState, name: account, message: e.target.value})
   }
   // ------------------------------------------------------------------------------
 
