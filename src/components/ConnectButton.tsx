@@ -15,7 +15,7 @@ import { Web3Provider } from '@ethersproject/providers';
 import { formatEther } from "@ethersproject/units";
 import { NftSwap } from '@traderxyz/nft-swap-sdk';
 
-import {useReducer, useEffect, useState} from "react"
+import {useReducer, useEffect, useState, useRef} from "react"
 
 import Layout from "../components/Layout";
 
@@ -29,7 +29,6 @@ import "../scss/chat.scss"
 
 // External Library
 import Gun from 'gun'
-import { constant } from "lodash";
 import { BigNumber } from "ethers";
 
 // Server GunDB - Initialising
@@ -101,7 +100,6 @@ export default function ConnectButton({ handleOpenModal }: Props) {
   // this also subscribes to new data as it changes and updates the local state
   useEffect(() => {
     const messages = gun.get('messages')
-
     messages.map().on(m => {
       dispatch(
         {
@@ -142,6 +140,15 @@ export default function ConnectButton({ handleOpenModal }: Props) {
     alert('send NFT')
   }
 
+  const messagesEndRef = useRef<null | HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [state.messages]);
 
   return account ? (
     <Layout>
@@ -214,12 +221,13 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         border="1px solid transparent"
         borderColor= "gray.800"
         boxShadow='lg'
-        overflow= 'auto'
+        overflow= 'hidden'
+
         padding={3}
         >
           {
             state.messages.map(message => (
-                <div className={message.name === '0xDuckie' ? "message-sent" : "message-received"} key={message.createdAt}>
+                <div className={message.name === '0xDuckie' ? "message-sent" : "message-received"} ref={messagesEndRef} key={message.createdAt}>
                     {message.name !== '0xDuckie' && 
                      ( <img className="avatar" src = {pfp2}/>)}
                     <h2> {message.message}   </h2>
