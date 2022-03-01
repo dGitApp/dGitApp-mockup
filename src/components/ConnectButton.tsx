@@ -10,6 +10,10 @@ import {
   Icon
 } from "@chakra-ui/react";
 
+	
+import { Web3Provider } from '@ethersproject/providers';
+import { NftSwap } from '@traderxyz/nft-swap-sdk';
+
 import {useReducer, useEffect, useState} from "react"
 import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
@@ -55,6 +59,7 @@ type Props = {
 export default function ConnectButton({ handleOpenModal }: Props) {
   const { activateBrowserWallet, account } = useEthers();
   const etherBalance = useEtherBalance(account);
+  const chainId = 1
 
   // GUN DATABASE VARIABLEs
   // -------------------------------------------------------------------------
@@ -117,7 +122,10 @@ export default function ConnectButton({ handleOpenModal }: Props) {
 
   function handleConnectWallet() {
     activateBrowserWallet();
-    console.log(account)
+    const provider = new Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const swapSdk = new NftSwap(provider, signer, chainId);
+
   }
 
   function handleDGitButton() {
