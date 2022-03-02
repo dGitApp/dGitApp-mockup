@@ -10,7 +10,8 @@ import {
   Icon
 } from "@chakra-ui/react";
 
-	
+import { NftGallery } from 'react-nft-gallery';
+
 import { Web3Provider } from '@ethersproject/providers';
 import { formatEther } from "@ethersproject/units";
 import { NftSwap } from '@traderxyz/nft-swap-sdk';
@@ -29,7 +30,7 @@ import "../scss/chat.scss"
 
 // External Library
 import Gun from 'gun'
-import { BigNumber } from "ethers";
+import { BigNumber, providers } from "ethers";
 
 // Server GunDB - Initialising
 // initialize gun locally
@@ -61,6 +62,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
   // const chainId = 1
   const [account, setAccount] = useState<string>()
   const [etherBalance, setEtherBalance] = useState<BigNumber>()
+  const [provider, setProvider] = useState<providers.Web3Provider>()
 
   // connect wallet function
   async function connectMetaMask() {
@@ -69,6 +71,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
     const signer = provider.getSigner()
     let userAddress = await signer.getAddress()
     let balance = await provider.getBalance(userAddress)
+    setProvider(provider)
     setAccount(userAddress)
     setEtherBalance(balance)
   }
@@ -136,8 +139,8 @@ export default function ConnectButton({ handleOpenModal }: Props) {
     connectMetaMask()
   }
 
-  function handleDGitButton() {
-    alert('send NFT')
+  function handleDgitButton() {
+    alert('nft')
   }
 
   const messagesEndRef = useRef<null | HTMLDivElement>(null)
@@ -254,7 +257,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
             justifyContent= "center"
             alignItems="center"
             children={ 
-              <button style = {{position: 'relative', top: '8px', display: 'flex'}} onClick={handleDGitButton} > 
+              <button style = {{position: 'relative', top: '8px', display: 'flex'}} onClick={handleDgitButton} > 
                 <Image src={logo} width = {9}/> 
               </button>
             }
