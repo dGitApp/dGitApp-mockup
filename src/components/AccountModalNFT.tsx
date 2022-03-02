@@ -12,26 +12,31 @@ import {
     ModalCloseButton,
     Text,
     Image
-  } from "@chakra-ui/react";
-  import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
-  import { useEthers } from "@usedapp/core";
+} from "@chakra-ui/react";
 
-  import pfp1 from "../assets/pfp/810.png"
+import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
+import { useEthers } from "@usedapp/core";
+
+import pfp1 from "../assets/pfp/810.png"
 import { NftGallery } from "react-nft-gallery";
+import { providers } from "ethers";
 
   
   type Props = {
     isOpen: any;
     onClose: any;
+    provider: providers.Web3Provider | undefined
+    address: string
   };
   
-  export default function AccountModalNFT({ isOpen, onClose }: Props) {
-    // required account 
+  export default function AccountModalNFT({ isOpen, onClose, provider, address }: Props) {
+    // required account
   
     return (
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
-        <ModalOverlay />
+        <ModalOverlay/>
         <ModalContent
+          display='flex'
           background="gray.900"
           border="1px"
           borderStyle="solid"
@@ -49,7 +54,7 @@ import { NftGallery } from "react-nft-gallery";
             }}
           />
           <ModalBody pt={0} px={4}>
-            <NftGallery ownerAddress = ''></NftGallery>
+            <NftGallery ownerAddress = {address}></NftGallery>
           </ModalBody>
   
           <ModalFooter
