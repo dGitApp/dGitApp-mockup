@@ -1,8 +1,4 @@
 import {
-    Box,
-    Button,
-    Flex,
-    Link,
     Modal,
     ModalOverlay,
     ModalContent,
@@ -11,13 +7,8 @@ import {
     ModalBody,
     ModalCloseButton,
     Text,
-    Image
 } from "@chakra-ui/react";
 
-import { ExternalLinkIcon, CopyIcon } from "@chakra-ui/icons";
-import { useEthers } from "@usedapp/core";
-
-import pfp1 from "../assets/pfp/810.png"
 import { NftGallery } from "react-nft-gallery";
 import { providers } from "ethers";
 
@@ -33,10 +24,9 @@ import { providers } from "ethers";
     // required account
   
     return (
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size="md">
+      <Modal isOpen={isOpen} onClose={onClose} isCentered size="6xl">
         <ModalOverlay/>
         <ModalContent
-          display='flex'
           background="gray.900"
           border="1px"
           borderStyle="solid"
@@ -54,7 +44,7 @@ import { providers } from "ethers";
             }}
           />
           <ModalBody pt={0} px={4}>
-            <NftGallery ownerAddress = {address}></NftGallery>
+            <NftGallery ownerAddress = {address} isInline = {true} galleryContainerStyle = {{display: 'flex'}} itemContainerStyle = {{margin: '5px'}} hasLoadMoreButton = {true} />
           </ModalBody>
   
           <ModalFooter
