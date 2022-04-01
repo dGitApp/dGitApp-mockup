@@ -11,11 +11,8 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 
-import { NftGallery } from 'react-nft-gallery';
-
 import { Web3Provider } from '@ethersproject/providers';
 import { formatEther } from "@ethersproject/units";
-import { NftSwap } from '@traderxyz/nft-swap-sdk';
 import AccountModalNFT from "./AccountModalNFT";
 
 import {useReducer, useEffect, useState, useRef} from "react"

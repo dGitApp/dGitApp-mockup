@@ -9,7 +9,8 @@ import {
     Text,
 } from "@chakra-ui/react";
 
-import { NftGallery } from "react-nft-gallery";
+// import { NftGallery } from "react-nft-gallery";
+import { NftGallery } from "dgallery-react";
 import { providers } from "ethers";
 
   
@@ -44,7 +45,7 @@ import { providers } from "ethers";
             }}
           />
           <ModalBody pt={0} px={4}>
-            <NftGallery ownerAddress = {address} isInline = {true} galleryContainerStyle = {{display: 'flex'}} itemContainerStyle = {{margin: '5px'}} hasLoadMoreButton = {true} />
+            <NftGallery ownerAddress = {address} walletProvider = {provider} darkMode = {true} hasTransferMode = {true} isInline = {true} galleryContainerStyle = {{display: 'flex'}} itemContainerStyle = {{margin: '5px'}} hasLoadMoreButton = {true} />
           </ModalBody>
   
           <ModalFooter
