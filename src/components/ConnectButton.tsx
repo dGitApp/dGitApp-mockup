@@ -64,7 +64,6 @@ export default function ConnectButton({ handleOpenModal }: Props) {
   const [providerAccount, setProviderAccount] = useState<providers.Web3Provider | undefined>()
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-
   // connect wallet function
   async function connectMetaMask() {
     const provider = new Web3Provider(window.ethereum)
