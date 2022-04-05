@@ -6,7 +6,7 @@ import { getAssetTitle, joinClassNames } from '../../../../library/utils';
 import { Lightbox } from '../Lightbox/Lightbox';
 import { TradingModal } from '../TradingModal/TradingModal';
 import { providers } from "ethers";
-import {Box, Image, Stack, Link, Center} from '@chakra-ui/react'
+import {Box, Image, VStack, Link} from '@chakra-ui/react'
 
 import './gallery-item.css';
 
@@ -45,11 +45,12 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
   decreaseLightboxIndex,
 }) => {
   const assetTitle = getAssetTitle(asset);
+
   const renderAssetMedia = () => {
     // No media present -> render the name/tokenId as a placeholder.
     if (!asset.image_preview_url) {
       return (
-        <div>
+        <div className='img-container'>
           {assetTitle}
         </div>
       );
@@ -65,30 +66,49 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
           autoPlay
           loop
           playsInline
+          className='img-video'
         ></video>
       );
     }
-
     return (
         <img
           src={asset.image_preview_url}
           alt={asset.name}
           loading="lazy"
+          className='img-video'
         />
     );
   };
 
   return (
-      <Box >
+    <Box
+    margin={1}
+    width={400}
+    >
+      <VStack>
         {metadataIsVisible && asset.collection.image_url &&  (
-            <Image
-                src={asset.collection.image_url}
-                alt={asset.collection.name}
-            />
+              <Box
+              position="relative"
+              right="110px"
+              top='50px'
+              height="4.2rem"
+              width="4.2rem"
+              borderRadius="2.1rem"
+              border="2px solid transparent"
+              borderColor="black"
+              bg="black"
+              zIndex={3}
+              >
+                <Image 
+                  src={asset.collection.image_url}
+                  alt={asset.collection.name}
+                  borderRadius = '50%'
+              />
+              </Box>
           )
         }
-        <Box 
-          display='flex'
+        <Box
+          height='-webkit-max-content'
         >
          <Link
             onClick={() => setLightboxIndex(index)}
@@ -102,7 +122,6 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
           <Box
             position='relative'
             top={-12}
-            left = {2}
             borderRadius={8}
             padding = {1}
             textAlign = 'center'
@@ -128,6 +147,7 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
           provider = {WalletProvider}
         />
         )}
-      </Box>
+      </VStack>
+    </Box>
   );
 };

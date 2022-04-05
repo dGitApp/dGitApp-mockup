@@ -33,8 +33,8 @@ import { providers } from "ethers";
           borderColor="gray.700"
           borderRadius="3xl"
         >
-          <ModalHeader color="white" px={4} fontSize="lg" fontWeight="medium">
-            Account
+          <ModalHeader color="white" fontSize="lg" fontWeight="medium">
+            Wallet Address: {address}
           </ModalHeader>
           <ModalCloseButton
             color="white"
@@ -46,23 +46,6 @@ import { providers } from "ethers";
           <ModalBody>
             <NFTGallery ownerAddress = {address} walletProvider = {provider} darkMode = {true} hasTransferMode = {true} />
           </ModalBody>
-  
-          <ModalFooter
-            justifyContent="end"
-            background="gray.700"
-            borderBottomLeftRadius="3xl"
-            borderBottomRightRadius="3xl"
-            p={6}
-          >
-            <Text
-              color="white"
-              textAlign="left"
-              fontWeight="medium"
-              fontSize="md"
-            >
-              Your transactions willl appear here...
-            </Text>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     );

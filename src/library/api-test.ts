@@ -43,10 +43,10 @@ export const fetchOpenseaAssets = async ({
 }): Promise<OpenseaAsset[]> => {
   try {
     const apiUrl = apiKey
-      ? `https://api.opensea.io/api/v1/assets?limit=50&offset=${offset}${
+      ? `https://rinkeby-api.opensea.io/api/v1/assets?limit=50&offset=${offset}${
           owner ? '&owner=' + owner : ''
         }`
-      : `https://api.opensea.io/api/v1/assets?${
+      : `https://rinkeby-api.opensea.io/api/v1/assets?${
           owner ? '&owner=' + owner : ''
         }`;
     const result = await fetch(

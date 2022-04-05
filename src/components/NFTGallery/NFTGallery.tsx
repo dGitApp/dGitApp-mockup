@@ -6,7 +6,7 @@ import { OpenseaAsset } from '../../types/OpenseaAsset';
 import { isEnsDomain } from '../../library/utils';
 import {
   Box,
-  Stack
+  HStack
 } from '@chakra-ui/react'
 
 import {
@@ -230,13 +230,10 @@ export const NFTGallery: React.FC<NFTGalleryProps> = ({
     display="flex"
     alignItems="center"
     overflowX='scroll'
-    padding = {1}
-    backgroundColor = 'red'
+    marginBottom={10}
   >
-    <Box display='flex'
-      padding = {1}
-    >
-    {displayedAssets.length === 0 && isLoading
+    <HStack spacing={8}>
+      {displayedAssets.length === 0 && isLoading
             ? <div />
             : displayedAssets.map((asset, index) => {
                 const item = (
@@ -267,7 +264,8 @@ export const NFTGallery: React.FC<NFTGalleryProps> = ({
                   item
                 );
               })}
-    </Box>
+    </HStack>
+    
     </Box>
   );
 };
