@@ -31,7 +31,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
           evt.stopPropagation();
         }}
       >
-        <img className="perfundo__image" src={asset.image_url} loading="lazy" />
+        <img className="perfundo__image" src={asset.image_url} loading="lazy" alt='' />
       </figure>
       <a
         className="perfundo__prev perfundo__control"

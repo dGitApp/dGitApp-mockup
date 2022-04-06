@@ -6,15 +6,13 @@ import { getAssetTitle } from '../../../../library/utils';
 import { Lightbox } from '../Lightbox/Lightbox';
 import { TradingModal } from '../TradingModal/TradingModal';
 import { providers } from "ethers";
-import {Box, Image, VStack, Link} from '@chakra-ui/react'
+import {Image, VStack} from '@chakra-ui/react'
 
 import './gallery-item.css';
 
 const ExternalLink: React.FC<{ href: string }> = ({ href, children }) => (
   <a
-    className="rnftg-no-underline rnftg-text-black rnftg-text-gray-200"
     href={href}
-    target="_blank"
     rel="noopener"
   >
     {children}
@@ -94,13 +92,13 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
               )
             }
           
-          <Link
+          <a
             onClick={() => setLightboxIndex(index)}
             href={`#lightbox-${index}`} 
           >
                {renderAssetMedia()}
-          </Link>
-          
+          </a>
+
           {metadataIsVisible && 
             <div className='token-id'> 
               <ExternalLink href={asset.permalink}>{assetTitle}</ExternalLink>

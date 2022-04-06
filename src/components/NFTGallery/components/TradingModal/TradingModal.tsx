@@ -4,6 +4,8 @@ import { OpenseaAsset } from '../../../../types/OpenseaAsset';
 import {MdSell} from 'react-icons/md'
 import { NftSwapV4, SwappableAsset } from '@traderxyz/nft-swap-sdk';
 import { providers } from "ethers";
+import swal from 'sweetalert';
+
 
 
 export interface TradingModalProps {
@@ -39,17 +41,27 @@ export const TradingModal: React.FC<TradingModalProps> = ({
       const CHAIN_ID = await signer.getChainId()
       const nftSwapSdk = new NftSwapV4(provider, signer, CHAIN_ID);
 
-      const order = nftSwapSdk.buildOrder(
+      const order = nftSwapSdk.buildNftAndErc20Order(
         NFTtoTradeMaker,
         ETHtoTradeTaker,
+        'sell',
         walletAddressMaker,
         { 
           taker: '0xa5A44E8e1E6F09dA3E69EA77FBfd1c56835074Fa'
         }
       );
       const signedOrder = await nftSwapSdk.signOrder(order);
-      const postedOrder = await nftSwapSdk.postOrder(signedOrder, String(CHAIN_ID));
+      const postedOrder = nftSwapSdk.postOrder(signedOrder, String(CHAIN_ID))
+
       console.log(postedOrder)
+      
+      swal({
+          title: "Done!",
+          text: "Offer created",
+          icon: "success",
+          timer: 4000,
+        })
+
       window.location.assign('#lightbox-untarget');
     }
 
@@ -73,7 +85,7 @@ export const TradingModal: React.FC<TradingModalProps> = ({
           }}
         >
               <div className="perfundo__figtitle"> Make Offer </div>
-              <img className="perfundo__image" src={asset.image_url} loading="lazy" />
+              <img className="perfundo__image" src={asset.image_url} loading="lazy" alt='' />
               <div className='perfundo__figcaption'>
                 <input  className='perfundo__inputbox' 
                         placeholder='Amount...'
