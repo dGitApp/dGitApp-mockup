@@ -1,7 +1,7 @@
 import React from 'react';
 import { NFTGalleryProps } from '../../NFTGallery';
 import { OpenseaAsset } from '../../../../types/OpenseaAsset';
-import { getAssetTitle, joinClassNames } from '../../../../library/utils';
+import { getAssetTitle } from '../../../../library/utils';
 
 import { Lightbox } from '../Lightbox/Lightbox';
 import { TradingModal } from '../TradingModal/TradingModal';
@@ -50,7 +50,7 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
     // No media present -> render the name/tokenId as a placeholder.
     if (!asset.image_preview_url) {
       return (
-        <div className='img-container'>
+        <div className='item-container'>
           {assetTitle}
         </div>
       );
@@ -75,62 +75,39 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
           src={asset.image_preview_url}
           alt={asset.name}
           loading="lazy"
-          className='img-video'
         />
     );
   };
 
   return (
-    <Box
-    margin={1}
-    width={400}
-    >
+    <div className='container'>
       <VStack>
-        {metadataIsVisible && asset.collection.image_url &&  (
-              <Box
-              position="relative"
-              right="110px"
-              top='50px'
-              height="4.2rem"
-              width="4.2rem"
-              borderRadius="2.1rem"
-              border="2px solid transparent"
-              borderColor="black"
-              bg="black"
-              zIndex={3}
-              >
+        <div className='item-container'>
+          {metadataIsVisible && asset.collection.image_url &&  (
+              <div className='token-logo'>
                 <Image 
                   src={asset.collection.image_url}
                   alt={asset.collection.name}
                   borderRadius = '50%'
               />
-              </Box>
-          )
-        }
-        <Box
-          height='-webkit-max-content'
-        >
-         <Link
+              </div>
+              )
+            }
+          
+          <Link
             onClick={() => setLightboxIndex(index)}
-            href={`#lightbox-${index}`}
+            href={`#lightbox-${index}`} 
           >
-           {renderAssetMedia()}
+               {renderAssetMedia()}
           </Link>
-        </Box>
+          
+          {metadataIsVisible && 
+            <div className='token-id'> 
+              <ExternalLink href={asset.permalink}>{assetTitle}</ExternalLink>
+            </div>
+          }
+        </div>
 
-        {metadataIsVisible && 
-          <Box
-            position='relative'
-            top={-12}
-            borderRadius={8}
-            padding = {1}
-            textAlign = 'center'
-            backgroundColor= 'white'
-          > 
-            <ExternalLink href={asset.permalink}>{assetTitle}</ExternalLink>
-          </Box>
-        }
-      
         {hasLightbox && hasTransferMode === false && (
         <Lightbox
           index={index}
@@ -147,7 +124,8 @@ export const GalleryItem: React.FC<GalleryItemProps> = ({
           provider = {WalletProvider}
         />
         )}
+        
       </VStack>
-    </Box>
+    </div>
   );
 };
