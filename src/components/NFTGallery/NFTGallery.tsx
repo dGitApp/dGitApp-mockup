@@ -231,6 +231,16 @@ export const NFTGallery: React.FC<NFTGalleryProps> = ({
     alignItems="center"
     overflowX='scroll'
     marginBottom={10}
+    sx={{
+      '&::-webkit-scrollbar': {
+        width: '16px',
+        borderRadius: '8px',
+        backgroundColor: `rgba(255, 255, 0, 0.05)`,
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: `rgba(255, 255, 255, 0.05)`,
+      },
+    }}
   >
     <HStack spacing={8}>
       {displayedAssets.length === 0 && isLoading

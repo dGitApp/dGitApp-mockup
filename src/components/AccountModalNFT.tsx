@@ -3,10 +3,8 @@ import {
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
-    Text,
 } from "@chakra-ui/react";
 
 import { NFTGallery } from "./NFTGallery";
