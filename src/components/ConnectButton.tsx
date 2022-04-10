@@ -11,7 +11,6 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 
-import { Web3Provider } from '@ethersproject/providers';
 import { formatEther } from "@ethersproject/units";
 import AccountModalNFT from "./AccountModalNFT";
 
@@ -29,7 +28,7 @@ import "../scss/chat.scss"
 
 // External Library
 import Gun from 'gun'
-import { BigNumber, providers } from "ethers";
+import { BigNumber, providers, ethers } from "ethers";
 
 // Server GunDB - Initialising
 // initialize gun locally
@@ -66,7 +65,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
 
   // connect wallet function
   async function connectMetaMask() {
-    const provider = new Web3Provider(window.ethereum)
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
     await provider.send("eth_requestAccounts", []);
     const signer = provider.getSigner()
     let userAddress = await signer.getAddress()

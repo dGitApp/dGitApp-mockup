@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import './Trading-Modal.css'
 import { OpenseaAsset } from '../../../../types/OpenseaAsset';
 import {MdSell} from 'react-icons/md'
-import { NftSwapV4, SwappableAsset } from '@traderxyz/nft-swap-sdk';
+import { NftSwapV4, SwappableAsset} from '@traderxyz/nft-swap-sdk';
+import {SignedERC721OrderStruct} from '@traderxyz/nft-swap-sdk/src/sdk/v4/types'
 import { providers } from "ethers";
 import swal from 'sweetalert';
 
@@ -41,25 +42,41 @@ export const TradingModal: React.FC<TradingModalProps> = ({
       const CHAIN_ID = await signer.getChainId()
       const nftSwapSdk = new NftSwapV4(provider, signer, CHAIN_ID);
 
-      const order = nftSwapSdk.buildNftAndErc20Order(
+      // Check if we need to approve the NFT for swapping
+      const approvalStatusForUserA = await nftSwapSdk.loadApprovalStatus(
+        NFTtoTradeMaker,
+        walletAddressMaker
+      );
+      // If we do need to approve User A's nft for swapping, let's do that now
+      if (!approvalStatusForUserA.contractApproved) {
+          const approvalTx = await nftSwapSdk.approveTokenOrNftByAsset(
+            NFTtoTradeMaker,
+            walletAddressMaker
+          );
+      
+        const approvalTxReceipt = await approvalTx.wait();
+        console.log(`Approved ${NFTtoTradeMaker.tokenAddress} contract to swap with 0x v4 (txHash: ${approvalTxReceipt.transactionHash})`);
+      }
+      
+      const order = nftSwapSdk.buildOrder(
         NFTtoTradeMaker,
         ETHtoTradeTaker,
-        'sell',
         walletAddressMaker,
         { 
-          taker: '0xa5A44E8e1E6F09dA3E69EA77FBfd1c56835074Fa'
+          taker: '0xa5A44E8e1E6F09dA3E69EA77FBfd1c56835074Fa',
         }
       );
-      const signedOrder = await nftSwapSdk.signOrder(order);
+
+      const signedOrder = (await nftSwapSdk.signOrder(order)) as SignedERC721OrderStruct;
       const postedOrder = nftSwapSdk.postOrder(signedOrder, String(CHAIN_ID))
 
-      console.log(postedOrder)
+      alert({postedOrder})
       
       swal({
           title: "Done!",
           text: "Offer created",
           icon: "success",
-          timer: 4000,
+          timer: 2000,
         })
 
       window.location.assign('#lightbox-untarget');
