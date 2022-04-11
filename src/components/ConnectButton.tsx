@@ -7,12 +7,15 @@ import {
   InputLeftElement, 
   InputRightElement, 
   InputGroup, 
-  Icon
+  Icon,
+  useDisclosure
 } from "@chakra-ui/react";
 
-import {useReducer, useEffect, useState} from "react"
-import { useEthers, useEtherBalance } from "@usedapp/core";
 import { formatEther } from "@ethersproject/units";
+import AccountModalNFT from "./AccountModalNFT";
+
+import {useReducer, useEffect, useState, useRef} from "react"
+
 import Layout from "../components/Layout";
 
 import { BsFillArrowRightCircleFill } from 'react-icons/bs'
@@ -25,6 +28,7 @@ import "../scss/chat.scss"
 
 // External Library
 import Gun from 'gun'
+import { BigNumber, providers, ethers } from "ethers";
 
 // Server GunDB - Initialising
 // initialize gun locally
@@ -51,15 +55,30 @@ type Props = {
 };
 
 
-
 export default function ConnectButton({ handleOpenModal }: Props) {
-  const { activateBrowserWallet, account } = useEthers();
-  const etherBalance = useEtherBalance(account);
+  // const { activateBrowserWallet, account, library} = useEthers();
+  // const chainId = 1
+  const [account, setAccount] = useState<string>()
+  const [etherBalance, setEtherBalance] = useState<BigNumber>()
+  const [providerAccount, setProviderAccount] = useState<providers.Web3Provider | undefined>()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  // connect wallet function
+  async function connectMetaMask() {
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    await provider.send("eth_requestAccounts", []);
+    const signer = provider.getSigner()
+    let userAddress = await signer.getAddress()
+    let balance = await provider.getBalance(userAddress)
+    setProviderAccount(provider)
+    setAccount(userAddress)
+    setEtherBalance(balance)
+  }
 
   // GUN DATABASE VARIABLEs
   // -------------------------------------------------------------------------
   // the form state manages the form input for creating a new message
-  const [formState, setForm] = useState(
+  const [formState, setForm] = useState<any>(
     {
       name: '',
       message: '',
@@ -83,7 +102,6 @@ export default function ConnectButton({ handleOpenModal }: Props) {
   // this also subscribes to new data as it changes and updates the local state
   useEffect(() => {
     const messages = gun.get('messages')
-
     messages.map().on(m => {
       dispatch(
         {
@@ -111,22 +129,33 @@ export default function ConnectButton({ handleOpenModal }: Props) {
   }
 
   function onChange(e: any) {
-      setForm({...formState, name: '0xDuckie', message: e.target.value})
+      setForm({...formState, name: account, message: e.target.value})
   }
   // ------------------------------------------------------------------------------
 
   function handleConnectWallet() {
-    activateBrowserWallet();
-    console.log(account)
+    // activateBrowserWallet();
+    connectMetaMask()
   }
 
-  function handleDGitButton() {
-    alert('send NFT')
+  const messagesEndRef = useRef<null | HTMLDivElement>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
+  useEffect(() => {
+    scrollToBottom()
+  }, [state.messages]);
 
   return account ? (
     <Layout>
+      <AccountModalNFT 
+          isOpen={isOpen} 
+          onClose={onClose}
+          provider = {providerAccount}
+          address = {account}
+      />
       {/* Header Profile */}
       <Box
         width= "390px"
@@ -196,13 +225,13 @@ export default function ConnectButton({ handleOpenModal }: Props) {
         border="1px solid transparent"
         borderColor= "gray.800"
         boxShadow='lg'
-        overflow= 'auto'
+        overflow= 'hidden'
         padding={3}
         >
           {
             state.messages.map(message => (
-                <div className={message.name === '0xDuckie' ? "message-sent" : "message-received"} key={message.createdAt}>
-                    {message.name !== '0xDuckie' && 
+                <div className={message.name === account ? "message-sent" : "message-received"} ref={messagesEndRef} key={message.createdAt}>
+                    {message.name !== account && 
                      ( <img className="avatar" src = {pfp2}/>)}
                     <h2> {message.message}   </h2>
                     <p>  {message.note}      </p>
@@ -229,7 +258,7 @@ export default function ConnectButton({ handleOpenModal }: Props) {
             justifyContent= "center"
             alignItems="center"
             children={ 
-              <button style = {{position: 'relative', top: '8px', display: 'flex'}} onClick={handleDGitButton} > 
+              <button style = {{position: 'relative', top: '8px', display: 'flex'}} onClick={onOpen} > 
                 <Image src={logo} width = {9}/> 
               </button>
             }

@@ -26,9 +26,11 @@ import {
   
   export default function AccountModal({ isOpen, onClose }: Props) {
     const { account, deactivate } = useEthers();
-  
+    
     function handleDeactivateAccount() {
-      deactivate();
+      // not working, it requires a different method to clear up the cache provider
+      // not a big deal right now
+      deactivate()
       onClose();
     }
   

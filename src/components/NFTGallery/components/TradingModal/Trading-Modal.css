@@ -1,0 +1,100 @@
+.perfundo__overlay {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    visibility: hidden;
+    /* [1] */
+    position: fixed;
+    /* [2] */
+    top: 0;
+    /* [2] */
+    right: 0;
+    /* [2] */
+    bottom: 0;
+    /* [2] */
+    left: 0;
+    /* [2] */
+    z-index: 999;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    background-color: rgba(34, 34, 34, 0.952);
+  }
+  .perfundo__overlay:target,
+  .perfundo__overlay.is-active {
+    visibility: visible;
+    /* [1] */
+  }
+  
+  
+
+  /**
+ * 1. Prevent the full sized image from loading initially.
+ * 2. Trigger loading of the full sized image when the lightbox is opened.
+ */
+.perfundo__figure {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-content: center;
+    border-radius: 40px;
+    border: 3px solid rgba(24, 24, 24, 0.555);
+    padding: 6px;
+    background-color: rgba(26, 26, 26, 0.945);
+    /* [1] */
+    margin: 2em;
+  }
+  :target > .perfundo__figure,
+  .is-active > .perfundo__figure {
+    display: block;
+    /* [2] */
+  }
+
+.perfundo__figtitle {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 10px;
+    color: rgba(255, 255, 255, 0.712);
+    align-items: center;
+    font-size: 30px;
+    font-family: sans-serif;
+    font-weight: bolder;
+}
+  
+.perfundo__figcaption {
+    position: relative;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin: 10px;
+    color: #fff;
+    align-items: center;
+}
+  
+  /**
+   * 1. Make the image container responsive.
+   */
+.perfundo__image {
+    border-radius: 35px;
+    border: 1px solid rgba(0, 0, 0, 0.767);
+    max-width: 100%;
+    /* [1] */
+}
+  
+.perfundo__inputbox {
+  display: flex;
+  min-width: 300px;
+  background-color: rgba(67, 67, 67, 0.659);
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid black;
+  height: 38px;
+  color: rgb(192, 192, 192);
+}
