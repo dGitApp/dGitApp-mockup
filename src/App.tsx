@@ -3,8 +3,6 @@ import theme from "./theme";
 import ConnectButton from "./components/ConnectButton";
 import AccountModal from "./components/AccountModal";
 import "@fontsource/inter";
-import AccountModalNFT from "./components/AccountModalNFT";
-
 
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
